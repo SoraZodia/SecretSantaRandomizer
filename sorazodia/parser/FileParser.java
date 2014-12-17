@@ -42,8 +42,8 @@ public class FileParser {
 	}
 	
 	/**
-	 * In case there's more than one token found in an single line,
-	 * splitString() will store them as separate entries in {@link #list}
+	 * Separate the text in {@link #dummyList} into separate tokens and store them into
+	 * {@link #list} 
 	 */
 	private static void splitString(){
 		for(String s: dummyList){
@@ -55,9 +55,7 @@ public class FileParser {
 	}
 	
 	/**
-	 * Allows other classes to use {@link #list}. Intended for
-	 * {@link sorazodia.randomizer.Randomizer Randomizer}
-	 * @return {@link #list}
+	 *Allows other classes to use {@link #list}
 	 */
 	public static ArrayList<String> getList(){
 		return list;
