@@ -13,6 +13,11 @@ import javax.swing.JTextField;
 
 import sorazodia.random.Randomizer;
 
+/**
+ * Displays a text box which the user can inputs their name
+ * and see who they will be giving a gift to
+ * @author SoraZodia
+ */
 @SuppressWarnings("serial")
 public class TextBox extends JPanel implements ActionListener{
 	
@@ -22,6 +27,9 @@ public class TextBox extends JPanel implements ActionListener{
 	private JButton clearButton = new JButton("Clear");
 	private JButton redoButton = new JButton("Redo?");
 	
+	/**
+	 * Adds in all the parts needed for the GUI
+	 */
 	public TextBox(){		
 		this.setLayout(new FlowLayout());
 		inputLine.addActionListener(this);
@@ -44,6 +52,9 @@ public class TextBox extends JPanel implements ActionListener{
 		this.setPreferredSize(new Dimension(500, 50));
 	}
 	
+	/**
+	 * Checks for user input
+	 */
 	public void actionPerformed(ActionEvent event){
 		String inputText = inputLine.getText();
 		String outputText;
@@ -67,6 +78,9 @@ public class TextBox extends JPanel implements ActionListener{
 		}
 	}
 
+	/**
+	 * Starts up the GUI
+	 */
 	public static void drawGUI(){
 		JFrame frame = new JFrame("Santa List Randomizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

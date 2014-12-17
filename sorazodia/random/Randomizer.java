@@ -1,6 +1,5 @@
 package sorazodia.random;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,9 +15,7 @@ public class Randomizer {
 	private static ArrayList<String> list = new ArrayList<>();
 	
 	/**
-	 * Randomize the list from {@link sorazodia.parser.FileParser#getList() FileParser's getList()}
-	 * and output it as an file.
-	 * @throws IOException
+	 * Randomize {@link #list} and output the result.
 	 */
 	public static String listRand(String name){
 		String text = "";
@@ -37,11 +34,17 @@ public class Randomizer {
 			return text;
 	}
 	
+	/**
+	 * Start up Randomizer
+	 */
 	public static void initRandomizer(){
 		for(String str: FileParser.getList())
 		list.add(str);
 	}
 	
+	/**
+	 * Checks if {@link #list} has any more elements in it
+	 */
 	public static boolean isListEmpty(){
 		return list.isEmpty();
 	}
