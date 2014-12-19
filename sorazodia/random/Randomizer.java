@@ -19,27 +19,32 @@ public class Randomizer {
 	 */
 	public static String listRand(String name){
 		String text = "";
-			int draws = 0;
-			if(!list.isEmpty()){
-				for(int x = 0; x<1; x++){
-					draws = rand.nextInt(list.size());
-					text = list.get(draws);
-					if(text.equalsIgnoreCase(name)){
-						if(list.size() == 1)text = "There's no more people to pick";
-						else x--;
-					}
-				}
-				list.remove(draws);
+		int draws = 0;
+		if(list.isEmpty()) text = "There's no more people to pick";
+		if(!list.isEmpty()){
+			for(int x = 0; x<1; x++){
+				draws = rand.nextInt(list.size());
+				text = list.get(draws);
+				if(text.equalsIgnoreCase(name) && list.size() != 1) x--;
 			}
-			return text;
+			list.remove(draws);
+		}
+		return text;
 	}
-	
+
 	/**
 	 * Start up Randomizer
 	 */
 	public static void initRandomizer(){
 		for(String str: FileParser.getList())
-		list.add(str);
+			if(!list.contains(str))list.add(str);
+	}
+	
+	/**
+	 * Nuke and remove all entries in {@link #list}
+	 */
+	public static void clear(){
+		list.clear();
 	}
 	
 	/**
