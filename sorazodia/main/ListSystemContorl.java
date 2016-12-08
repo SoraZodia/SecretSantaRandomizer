@@ -1,5 +1,8 @@
 package sorazodia.main;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import sorazodia.gui.TextDisplay;
 
 /**
@@ -14,6 +17,12 @@ public class ListSystemContorl {
 	 */
 	public static void main(String args[]){
 		System.out.println("[ListSystemContorl] Drawing Gui");
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		TextDisplay.drawGUI();
 		System.out.println("[ListSystemContorl] Finished");
 	}

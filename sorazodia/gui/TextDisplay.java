@@ -1,13 +1,16 @@
 package sorazodia.gui;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import sorazodia.parser.FileParser;
+import sorazodia.parser.FileIO;
 import sorazodia.random.Randomizer;
 
 /**
@@ -37,8 +40,10 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 	private JButton redoButton;
 	private JButton reloadButton;
 	private JButton loadButton;
+	private JButton printButton;
 	private JScrollPane scroll;
 	private GridBagConstraints bag = new GridBagConstraints();
+	private JFileChooser fc = new JFileChooser();
 	
 	private boolean listChanged = false;
 	
@@ -104,33 +109,46 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 		clearButton.setActionCommand("clear");
 		clearButton.setVisible(false);
 		clearButton.addActionListener(this);
-		bag.gridy = 5;
-		bag.gridheight = 2;
+		bag.fill = GridBagConstraints.HORIZONTAL;
+		bag.gridy = 6;
+		bag.gridheight = 1;
 		this.add(clearButton, bag);
 
 		redoButton = new JButton("Redo?");
 		redoButton.setActionCommand("redo");
 		redoButton.setVisible(false);
 		redoButton.addActionListener(this);
-		bag.gridy = 5;
-		bag.gridheight = 2;
+		bag.fill = GridBagConstraints.HORIZONTAL;
+		bag.gridy = 6;
+		bag.gridheight = 1;
 		this.add(redoButton, bag);
 		
 		reloadButton = new JButton("Refresh List");
 		reloadButton.setActionCommand("refresh");
 		reloadButton.addActionListener(this);
-		bag.gridx = 0;
-		bag.gridy = 5;
+		bag.fill = GridBagConstraints.HORIZONTAL;
+		bag.gridx = 2;
+		bag.gridy = 8;
 		bag.gridheight = 1;
 		this.add(reloadButton, bag);
 		
-		loadButton = new JButton("Load names.txt");
+		loadButton = new JButton("Load File");
 		loadButton.setActionCommand("load");
 		loadButton.addActionListener(this);
-		bag.gridx = 0;
-		bag.gridy = 4;
+		bag.fill = GridBagConstraints.HORIZONTAL;
+		bag.gridx = 2;
+		bag.gridy = 7;
 		bag.gridheight = 1;
 		this.add(loadButton, bag);
+		
+		printButton = new JButton("Print Result");
+		printButton.setActionCommand("print");
+		printButton.addActionListener(this);
+		bag.fill = GridBagConstraints.HORIZONTAL;
+		bag.gridx = 2;
+		bag.gridy = 9;
+		bag.gridheight = 1;
+		this.add(printButton, bag);
 	}
 	
 	/**
@@ -139,13 +157,15 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 	@Override
 	public void actionPerformed(ActionEvent event){
 
+		int userVal = 0;
+		
 		switch(event.getActionCommand()){
 		
 		case "enter":
 			
 			if(listChanged){
-				FileParser.clearList(); // Did this so that the text box changes will also be reflected into the actual ArrayList
-				FileParser.addToList(list.getText());
+				FileIO.clearList(); // Did this so that the text box changes will also be reflected into the actual ArrayList
+				FileIO.addToList(list.getText());
 				Randomizer.clear();
 				Randomizer.initRandomizer();
     			listChanged = false;
@@ -162,7 +182,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			}
 
 			if(!Randomizer.isListEmpty() && (inputText.matches("\\s+") || inputText.isEmpty())) outputText = "Please Enter An Name";
-			else outputText = Randomizer.listRand(inputText);
+			else outputText = Randomizer.getReciever(inputText);
 			
 			output.setText(outputText);
 			
@@ -173,11 +193,15 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			
 			if(redoButton.isVisible()) redoButton.setVisible(false);
 			
+			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			userVal = fc.showDialog(this, "Load File");
+			
 			try{
-				list.setText(FileParser.read("names.txt") + list.getText());
+				if (userVal == JFileChooser.APPROVE_OPTION)
+					list.setText(FileIO.read(fc.getSelectedFile().getAbsolutePath()) + list.getText());
 			}
 			catch(IOException io){
-				output.setText("Unable to find or read names.txt");
+				output.setText("Unable to read file");
 				io.printStackTrace();
 			}
 			break;
@@ -187,8 +211,8 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			break;
 			
 		case "refresh":
-			FileParser.clearList();
-			FileParser.addToList(list.getText());
+			FileIO.clearList();
+			FileIO.addToList(list.getText());
 			Randomizer.clear();
 			Randomizer.initRandomizer();
 			break;
@@ -197,6 +221,31 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			output.setText("");
 			Randomizer.initRandomizer();
 			redoButton.setVisible(false);
+			break;
+			
+		case "print":
+			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			userVal = fc.showDialog(this, "Save to Folder");
+			
+			if (userVal == JFileChooser.APPROVE_OPTION)
+			{
+				File file = new File(fc.getSelectedFile().getAbsolutePath() + "\\list.txt");
+				int success = FileIO.write(file);
+				
+				if (success == 1)
+				{
+					output.setText("Success!");
+					try {
+						Desktop.getDesktop().open(file);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				else
+					output.setText("Error with the folder choosen");
+				
+			}
+			
 			break;
 			
 		}

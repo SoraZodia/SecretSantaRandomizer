@@ -3,7 +3,7 @@ package sorazodia.random;
 import java.util.ArrayList;
 import java.util.Random;
 
-import sorazodia.parser.FileParser;
+import sorazodia.parser.FileIO;
 
 /**
  * Takes, randomize, and output an list of Strings
@@ -17,7 +17,7 @@ public class Randomizer {
 	/**
 	 * Randomize {@link #list} and output the result.
 	 */
-	public static String listRand(String name){
+	public static String getReciever(String name){
 		String text = "";
 		int draws = 0;
 		if(list.isEmpty()) text = "There's no more people to pick";
@@ -36,7 +36,7 @@ public class Randomizer {
 	 * Start up Randomizer
 	 */
 	public static void initRandomizer(){
-		for(String str: FileParser.getList())
+		for(String str: FileIO.getList())
 			if(!list.contains(str))list.add(str);
 	}
 	
