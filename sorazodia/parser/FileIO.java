@@ -35,6 +35,7 @@ public class FileIO {
 			writer = new BufferedWriter(new FileWriter(file));
 			writer.write(santaList.toString());
 			writer.close();
+			file.setReadOnly();
 		}
 		catch (IOException io)
 		{
