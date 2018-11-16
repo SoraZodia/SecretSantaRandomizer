@@ -1,8 +1,18 @@
 package sorazodia.random;
 
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Random;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import sorazodia.main.ListSystemContorl;
 import sorazodia.parser.FileIO;
 
 /**
@@ -38,6 +48,56 @@ public class Randomizer {
 	public static void initRandomizer(){
 		for(String str: FileIO.getList())
 			if(!list.contains(str))list.add(str);
+	}
+	
+	/**
+	 * Send text message via email
+	 */
+	public static void sendEmail(String senderPhone, String receiver)
+	{
+		// The sender's email, for this, an dummy email was used
+        final String username = ListSystemContorl.getEmail(); 
+        // The password to log into the above email address
+        final String password = ListSystemContorl.getPass();
+        // The reciever's email, in this case, it's the SMS gateway of the target's phone
+        final String to = senderPhone.replaceAll("[\\(\\)-]", "") + "@tmomail.net"; 
+        // Tells Java what kind of protocol it will be using when it is connected to the gateway
+        // along with what server at which port that it will be using
+        Properties props = new Properties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        // Creates an Session that would maintain an connection to the Google's mail server
+        // this is where Java would log in and connect to their account on their behalf
+        // two factor authentication needs to be disabled for this method to work properly
+        Session session = Session.getInstance(props,
+          new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+          });
+
+        // Creates an small email to be send to the target's phone
+        // the resulting message's body would look like "Wake Up Call / Yo, wake up"
+        // following the format "<Subject> / <Massage>"
+        try {
+
+        	System.out.print("Sending message... ");
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject("Secert Santa");
+            message.setText("Gifting to " + receiver);
+
+            Transport.send(message);
+
+            System.out.println("Sent");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 	}
 	
 	/**

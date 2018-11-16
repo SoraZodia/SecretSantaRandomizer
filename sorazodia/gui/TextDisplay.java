@@ -182,7 +182,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			}
 
 			if(!Randomizer.isListEmpty() && (inputText.matches("\\s+") || inputText.isEmpty())) outputText = "Please Enter An Name";
-			else outputText = Randomizer.getReciever(inputText);
+			else outputText = Randomizer.getReciever(inputText).split("[|]")[0];
 			
 			output.setText(outputText);
 			
@@ -211,10 +211,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			break;
 			
 		case "refresh":
-			FileIO.clearList();
-			FileIO.addToList(list.getText());
-			Randomizer.clear();
-			Randomizer.initRandomizer();
+			randomize();
 			break;
 			
 		case "redo":
@@ -224,6 +221,8 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			break;
 			
 		case "print":
+			randomize();
+			
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			userVal = fc.showDialog(this, "Save to Folder");
 			
@@ -250,6 +249,13 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			
 		}
 		
+	}
+	
+	private void randomize() {
+		FileIO.clearList();
+		FileIO.addToList(list.getText());
+		Randomizer.clear();
+		Randomizer.initRandomizer();
 	}
 
 	/**

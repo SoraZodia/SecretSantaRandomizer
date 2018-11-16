@@ -25,17 +25,26 @@ public class FileIO {
 	{
 		int val = 1;
 		StringBuilder santaList = new StringBuilder();
+		
 		Randomizer.initRandomizer();
 		
-		for (String giver: list)
-			santaList.append(giver + " > " + Randomizer.getReciever(giver) + System.lineSeparator());
+		for (String giver: list) {
+			String senderInfo[] = giver.split("[|]");
+			String recieverInfo[] = Randomizer.getReciever(giver).split("[|]");
+			if (senderInfo.length > 1) {
+				Randomizer.sendEmail(senderInfo[1], recieverInfo[0]);
+			}
+			else {
+				santaList.append(senderInfo[0] + " > " + recieverInfo[0] + System.lineSeparator());
+			}
+			
+		}
 		
 		try
 		{
 			writer = new BufferedWriter(new FileWriter(file));
 			writer.write(santaList.toString());
 			writer.close();
-			file.setReadOnly();
 		}
 		catch (IOException io)
 		{
