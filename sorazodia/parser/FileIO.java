@@ -31,8 +31,9 @@ public class FileIO {
 		for (String giver: list) {
 			String senderInfo[] = giver.split("[|]");
 			String recieverInfo[] = Randomizer.getReciever(giver).split("[|]");
+			String carrier = recieverInfo.length > 2 ? recieverInfo[2] : "tmobile";
 			if (senderInfo.length > 1) {
-				Randomizer.sendEmail(senderInfo[1], recieverInfo[0]);
+				Randomizer.sendEmail(senderInfo[1], recieverInfo[0], carrier);
 			}
 			else {
 				santaList.append(senderInfo[0] + " > " + recieverInfo[0] + System.lineSeparator());

@@ -50,17 +50,34 @@ public class Randomizer {
 			if(!list.contains(str))list.add(str);
 	}
 	
+	private static String getCarrierMail(String code) {
+		switch(code) {
+		case "tmobile":
+			return "@tmomail.net";
+		case "att":
+			return "@txt.att.net";
+		case "verizon":
+			return "@vtext.com";
+		case "sprint":
+			return "@messaging.sprintpcs.com";
+		case "boost":
+			return "@sms.myboostmobile.com";
+		default:
+			return "@tmomail.net";
+		}
+	}
+	
 	/**
 	 * Send text message via email
 	 */
-	public static void sendEmail(String senderPhone, String receiver)
+	public static void sendEmail(String senderPhone, String receiver, String carrierCode)
 	{
 		// The sender's email, for this, an dummy email was used
         final String username = ListSystemContorl.getEmail(); 
         // The password to log into the above email address
         final String password = ListSystemContorl.getPass();
         // The reciever's email, in this case, it's the SMS gateway of the target's phone
-        final String to = senderPhone.replaceAll("[\\(\\)-]", "") + "@tmomail.net"; 
+        final String to = senderPhone.replaceAll("[\\(\\)-]", "") + getCarrierMail(carrierCode); 
         // Tells Java what kind of protocol it will be using when it is connected to the gateway
         // along with what server at which port that it will be using
         Properties props = new Properties();

@@ -8,6 +8,7 @@ import sorazodia.gui.TextDisplay;
 
 /**
  * Main control line, I like to call it "SYSTEM" (Imaginary cookie to you if you get the reference)
+ * Man, it was funny at the time ^
  * @author SoraZodia
  */
 public class ListSystemContorl {
