@@ -56,7 +56,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 		this.drawTextArea();
 		this.drawPanel();
 		this.drawTextField();		
-        this.drawButton();
+        this.drawButtonArea();
 
 		this.setPreferredSize(new Dimension(600, 550));
 	}
@@ -103,7 +103,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 		this.add(scroll, bag);
 	}
 	
-	private void drawButton(){
+	private void drawButtonArea(){
 	
 		clearButton = new JButton("Clear");
 		clearButton.setActionCommand("clear");
@@ -221,6 +221,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 			break;
 			
 		case "print":
+			output.setText("Sending messages...");
 			randomize();
 			
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -257,7 +258,7 @@ public class TextDisplay extends JPanel implements ActionListener, DocumentListe
 		Randomizer.clear();
 		Randomizer.initRandomizer();
 	}
-
+	
 	/**
 	 * Starts up the GUI
 	 */

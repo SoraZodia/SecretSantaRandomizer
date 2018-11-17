@@ -23,7 +23,6 @@ public class Randomizer {
 	
 	private static Random rand = new Random();
 	private static ArrayList<String> list = new ArrayList<>();
-	
 	/**
 	 * Randomize {@link #list} and output the result.
 	 */
@@ -42,9 +41,7 @@ public class Randomizer {
 		return text;
 	}
 
-	/**
-	 * Start up Randomizer
-	 */
+	
 	public static void initRandomizer(){
 		for(String str: FileIO.getList())
 			if(!list.contains(str))list.add(str);

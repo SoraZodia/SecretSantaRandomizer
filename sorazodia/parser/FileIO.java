@@ -31,7 +31,8 @@ public class FileIO {
 		for (String giver: list) {
 			String senderInfo[] = giver.split("[|]");
 			String recieverInfo[] = Randomizer.getReciever(giver).split("[|]");
-			String carrier = recieverInfo.length > 2 ? recieverInfo[2] : "tmobile";
+			String carrier = senderInfo.length > 2 ? senderInfo[2] : "tmobile";
+			System.out.println(carrier);
 			if (senderInfo.length > 1) {
 				Randomizer.sendEmail(senderInfo[1], recieverInfo[0], carrier);
 			}
