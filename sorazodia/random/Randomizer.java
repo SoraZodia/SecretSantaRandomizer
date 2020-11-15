@@ -43,6 +43,7 @@ public class Randomizer {
 
 	
 	public static void initRandomizer(){
+		rand = new Random(rand.nextLong());
 		for(String str: FileIO.getList())
 			if(!list.contains(str))list.add(str);
 	}
